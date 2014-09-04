@@ -20,8 +20,9 @@ class SyndeticsSource < CoverSource
 		}
 
 		ci = CoverInfo.new("Syndetics")
-		ci.last_checked = Date.today
-		ci.url = syndetics_url			
+		ci.last_checked = Date.today.to_s
+		ci.url = syndetics_url	
+		ci.isbn = isbn.to_s		
 
 		lc = ImageList.new(syndetics_file)
 		if(lc.columns > 1)
