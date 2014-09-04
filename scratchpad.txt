@@ -1,0 +1,56 @@
+METHODS
+
+coverByISBN
+coverByUPC
+
+SCENARIOS
+
+- cover requested that we've never seen before
+  - create the cover object
+  - store the initial information we're given (ISBN, UPC)
+    - are there other identifiers we could use?
+  - check our sources and store the information
+    - how do we abstract this to make adding another source easier?
+      - method - checkCover
+        - returns a coverCheck object
+          - coverSource{} (object, R)
+          - hasCover (bool, R)
+          - cover (URL, O)
+          - timeOfCheck(Date, R)          
+- cover requested that we've had a request for before and have information about
+  - when did we last get the information?
+     - should we check our sources again?
+       - force recheck option?
+     
+SOURCES
+  - Syndetics
+  - Open Library
+  - LibraryThing
+  - BookNet
+  
+OBJECTS
+  "cover": {
+    "isbn": "1234",
+    "upc": "5678",
+    "sources": {
+      "syndetics":{
+        "url":"http://...",
+        "lastChecked":"2014/08/04"
+      },
+      "openLibrary":{
+        "url":"http://...",
+        "lastChecked":"2014/08/04"      
+      }      
+    }
+  }
+  
+    "coverSource": {
+      "urlParams": {
+        "accessToken":"12345"
+      },
+      "checkCover": {
+        function: {
+          return coverCheck{};
+        }
+      }
+    }
