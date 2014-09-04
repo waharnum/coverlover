@@ -2,6 +2,7 @@ require './cover'
 require './cover_source'
 require './syndetics_source'
 require './cover_info'
+require './cover_mongo'
 require 'mongo'
 include Mongo
 
@@ -14,7 +15,7 @@ db = client.db("coverdb")
 coll = db.collection("covercollection")
 matches = coll.find("isbn" => isbn)
 
-if (matches.count > 0)
+if (CoverMongo.has_isbn(isbn))
 puts "There's a match in mongo"
 	match = matches.to_a[0]
 	puts "\tProvider is: " + match["source_name"]
