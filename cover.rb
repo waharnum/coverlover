@@ -1,7 +1,3 @@
-require 'open-uri'
-require 'RMagick'
-include Magick
-
 class Cover
 	def initialize(isbn, upc)
 		@isbn = isbn

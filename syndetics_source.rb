@@ -24,14 +24,14 @@ class SyndeticsSource < CoverSource
 		puts content_length
 
 		ci = CoverInfo.new("Syndetics")
-		ci.last_checked = Date.today.to_s
-		ci.url = syndetics_base+syndetics_path
+		ci.last_checked = Date.today.to_s		
 		ci.isbn = isbn.to_s		
 		
 		
 		if(content_length.to_i > 100)
 			puts "Syndetics has a cover image!"
 			ci.has_cover = true
+			ci.url = syndetics_base+syndetics_path
 		else
 			puts "Syndetics has no cover image!"
 			ci.has_cover = false
