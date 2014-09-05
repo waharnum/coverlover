@@ -23,12 +23,13 @@ isbns.sample(5).each do |isbn|
 	matches = coll.find("isbn" => isbn)
 
 	if (CoverMongo.has_isbn(isbn))
-	puts "There's a match in mongo"
+	puts "There's a match in mongo"		
 		match = matches.to_a[0]
 		puts "\tHas cover?: #{match['has_cover']}"
 		puts "\tProvider is: #{match['source_name']}" 
 		puts "\tLast checked on: #{match['last_checked']}"
 		puts "\tURL is: #{match['url']}"
+		puts "\tMongo ID is: #{match['_id']}"
 		currentDate = Date.today
 		puts currentDate
 		checkDate = Date.parse(match["last_checked"])
