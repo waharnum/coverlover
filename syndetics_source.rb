@@ -16,9 +16,10 @@ class SyndeticsSource < CoverSource
 		content_length = 0
 
 		Net::HTTP.start(syndetics_base) do |http|
+			# TODO: etags and If-Modified-Since
 		  http.open_timeout = 2
 		  http.read_timeout = 2
-		  content_length = http.head(syndetics_path)["content-length"]		  
+		  content_length = http.head(syndetics_path)["content-length"]			  
 		end
 
 		puts content_length
