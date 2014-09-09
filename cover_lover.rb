@@ -1,12 +1,16 @@
 require './cover'
 require './cover_source'
 require './syndetics_source'
+require './open_library_source'
 require './cover_info'
 require './cover_mongo'
 require 'mongo'
+require 'json'
 include Mongo
 
-isbns = ["9780670026326","9780345549365","9780765328021","1481404911","9780375870644","9781443136167","9782701182995","9782896607730","9782714456519","9782810005727","1595341897","9781442369801","0785190104","9781608183395","9781621697862","0062235796"]
+# isbns = ["9780670026326","9780345549365","9780765328021","1481404911","9780375870644","9781443136167","9782701182995","9782896607730","9782714456519","9782810005727","1595341897","9781442369801","0785190104","9781608183395","9781621697862","0062235796","1550820249"]
+
+isbns = ["0062235796","1550820249"]
 
 # isbn = "9780670026326"
 
@@ -14,7 +18,10 @@ client = MongoClient.new("localhost",27017)
 db = client.db("coverdb")
 coll = db.collection("covercollection")
 
-isbns.sample(5).each do |isbn|
+# puts "Deleting mongo data"
+# coll.remove
+
+isbns.each do |isbn|
 	c = Cover.new(isbn,"")
 
 	puts "Checking ISBN #{isbn}"
@@ -39,12 +46,10 @@ isbns.sample(5).each do |isbn|
 
 	else
 	puts "No match in mongo, checking image with providers"
-	ci = c.checkSyndetics()
-	# puts "#{ci.source_name} | #{ci.last_checked} | #{ci.url} | #{ci.has_cover}"
-	ci_json = ci.instance_variables.each_with_object({}) { |var,hash| hash[var.to_s.delete("@")] = ci.instance_variable_get(var) }
-	puts "Storing in Mongo"
-
-	id = coll.insert(ci_json)
+	c.check_sources()		
+	# puts "JSON: #{c.to_json().class}"	
+	puts "Storing in Mongo"	
+	id = coll.insert(JSON.parse(c.to_json()))
 	puts "stored with ID #{id}"
 	puts "--------------------------"
 	puts "--------------------------"
@@ -59,7 +64,6 @@ end
 # puts matches.count
 # Document
 
-#  puts "Deleting mongo data"
- # coll.remove
+  
 
 

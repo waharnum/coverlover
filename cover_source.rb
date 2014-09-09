@@ -7,4 +7,5 @@ class CoverSource
 	def check_cover
 		raise NotImplementedError, "You must implement the check_cover method"
 	end
+
 end

@@ -15,4 +15,8 @@ class CoverInfo
 	def initialize(source_name)
 		@source_name = source_name
 	end	
+
+	def to_json
+		instance_variables.each_with_object({}) { |var,hash| hash[var.to_s.delete("@")] = instance_variable_get(var) }		
+	end
 end
