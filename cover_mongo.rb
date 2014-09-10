@@ -3,7 +3,7 @@ class CoverMongo
 		client = MongoClient.new("localhost",27017)
 		db = client.db("coverdb")
 		coll = db.collection("covercollection")
-		matches = coll.find("isbn" => isbn)		
+		matches = coll.find({'data.isbn' => isbn})		
 		if(matches.count > 0) 
 			return true
 		else 

@@ -35,6 +35,5 @@ class Cover
 		'json_class' => self.class.name,
 		'data' => {"isbn" => @isbn, "upc" => @upc, "sources" => sources_to_json}
 		}.to_json(*a)		
-		#instance_variables.each_with_object({}) { |var,hash| hash[var.to_s.delete("@")] = instance_variable_get(var) }		
 	end
 end
