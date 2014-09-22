@@ -21,7 +21,7 @@ isbns = ["9780670026326","9780345549365","9780765328021","1481404911","978037587
 client = MongoClient.new("localhost",27017)
 db = client.db("coverdb")
 coll = db.collection("covercollection")
-
+currentDate = Date.today
  
 
 isbns.each do |isbn|
@@ -29,27 +29,33 @@ isbns.each do |isbn|
 
 	puts "Checking ISBN #{isbn}"
 
-	puts "Checking mongo"	
+	puts "\tChecking mongo"	
 	matches = coll.find_one({'data.isbn' => isbn})		
 	if (CoverMongo.has_isbn(isbn))
-	puts "There's a match in mongo"				
+	puts "\tThere's a match in mongo"				
+		puts
 		puts "Sources in preference order:"
+		puts
 		source_preference_order.each do |source_preference|
 			puts "\t#{source_preference}"			
 			source_index = matches["data"]["sources"].find_index {|source| source["source_name"] == source_preference}			
 			if(source_index != nil)
-				puts "\t#{matches["data"]["sources"][source_index]}"			
-			else puts "\t No match found for #{source_preference}"
+				source_found = matches["data"]["sources"][source_index]
+				puts "\t\t#{source_found}"
+				checkDate = Date.parse(source_found["last_checked"])		
+				days_since_check = (currentDate - checkDate).to_i
+				puts "\t\tDays since check: #{days_since_check}"
+				puts "\t\t "			
+			else 
+				puts "\t\t No match found for #{source_preference}"
+				puts
 			end
 			
 
 		end		
-		currentDate = Date.today
-		# puts currentDate
-		# checkDate = Date.parse(match["last_checked"])
-		# checkDate = Date.parse("2014-08-24")
-		# days_since_check = (currentDate - checkDate).to_i
-		# puts "Days since check: #{days_since_check}"
+		
+		
+
 
 	else
 	puts "No match in mongo, checking image with providers"
