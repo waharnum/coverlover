@@ -10,12 +10,16 @@ require 'json'
 include Mongo
 
 get '/cover/isbn/:isbn' do
-  isbn = params[:isbn]  
-
+  isbn = params[:isbn]    
   if(CoverMongo.has_isbn(isbn))
+  	cover_sources = CoverMongo.get_isbn(isbn)['data']['sources']
   	"
-  	<h1>Cover Located in Mongo</h1>
-  	#{CoverMongo.get_isbn(isbn)}
+  	<h1>Cover Located in Mongo</h1>  	
+  	#{cover_sources[0]}<br/>
+  	<img src='http://#{cover_sources[0]['url']}' />
+  	<hr/>
+  	#{cover_sources[1]}<br/>
+  	<img src='http://#{cover_sources[1]['url']}' />
   	"
   else
   	cover = Cover.new(isbn,"")  
